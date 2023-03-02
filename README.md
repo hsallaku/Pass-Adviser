@@ -1,18 +1,16 @@
 This is my CS50x Final Project.
-github username: hsallaku
 email: hsallaku01@gmail.com
 
-The name of my project is PassAdviser. The purpose was to make a password managing website
-with two main features: a password generator and a password digital keychain.
+Pass Adviser is a secure password generator and storage website designed to simplify online security. By leveraging a combination of Python, HTML, CSS, and JavaScript, along with various libraries and frameworks, Pass Adviser generates complex passwords that are nearly impossible to guess. Additionally, it provides users with a secure storage space to store their passwords in an encrypted database. With its powerful combination of technology and security features, Pass Adviser is an essential tool for anyone looking to protect their online identity.
 
 Within the project directory there is a folder called PassAdviser, containing the source code.
 
-The application.py file is the main code of the project. It is where the http server is called,
-giving us a connection. Here, I also appointed certain operations for each route.
+"application.py" is the main file. It is where the http server is called,
+giving us a connection. Here, I also appointed different operations for each of the web routes specified.
 
-"helpers.py" is a python file containing custom functions to assist us in application.py.
+"helpers.py" works like a supplementary file which holds custom functions that are called in "application.py".
 
-"passadviser.db" is the database for this project, where all the user data are stored
+"passadviser.db" is the database file and holds all the user records
 
 The "templates" folder contains all of the html templates for each page displayed.
 
