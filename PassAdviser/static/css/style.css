@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/*uigradients.com for pre-generated gradient backgrounds*/
+.bg-nav{
+  background: #FF8008;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFC837, #FF8008);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFC837, #FF8008); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+nav{
+  display: flex;
+  height: 80px;
+  width: 100%;
+  background: #1b1b1b;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px 0 100px;
+  flex-wrap: wrap;
+}
+
+nav .logo{
+  color: #fff;
+  font-size: 35px;
+  font-weight: 600;
+}
+
+nav ul{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+nav ul li{
+  margin: 0 5px;
+}
+
+nav ul li a{
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+nav ul li a.active,
+nav ul li a:hover{
+  color: #111;
+  background: #FFB000;
+  text-decoration: none;
+}
+
+nav .menu-btn i{
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+
+@media (max-width: 1000px){
+  nav{
+    padding: 0 40px 0 50px;
+  }
+}
+
+@media (max-width: 920px) {
+  nav .menu-btn i{
+    display: block;
+  }
+
+  #click:checked ~ .menu-btn i:before{
+    content: "\f00d";
+  }
+
+  nav ul{
+    position: fixed;
+    top: 80px;
+    left: -100%;
+    background: #111;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  #click:checked ~ ul{
+    left: 0;
+  }
+
+  nav ul li{
+    width: 100%;
+    margin: 40px 0;
+  }
+
+  nav ul li a{
+    width: 100%;
+    margin-left: -100%;
+    display: block;
+    font-size: 20px;
+    transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  #click:checked ~ ul li a{
+    margin-left: 0px;
+  }
+
+  nav ul li a.active,
+  nav ul li a:hover{
+    background: none;
+    color: #FFB000;
+  }
+}
+
+.content{
+  text-align: center;
+  width: 100%;
+  color: #1f1f1f;
+}
+
+.content div{
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.main-body{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.banner-body{
+  width: 100%;
+  text-align: center;
+}
+
+.banner-btn a{
+  border: 2px solid #1f1f1f;
+  border-radius: 50px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px 50px;
+  display: inline-block;
+  margin-top: 15px;
+  color: #1f1f1f;
+  font-weight: bold;
+}
+
+.banner-btn a.active{
+  border-color: #1f1f1f;
+  background: #1f1f1f;
+  color: #fff;
+  font-weight: bold;
+}
+
+.btn-logout{
+  border: 2px solid #FFB000;
+  border-radius: 50px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.mt-100{
+    margin-top:100px;
+}
+
+.mt-120{
+    margin-top:120px;
+}
+
+.gn-body{
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+
+}
+
+.inputBox{
+  width: 850px;
+  position: relative;
+}
+
+.inputBox{
+  font-size: 28px;
+}
+
+.inputBox input{
+  position: relative;
+  width: 100%;
+  height: 60px;
+  border: none;
+  margin: 15px 0 20px;
+  background: transparent;
+  outline: none;
+  padding: 0 20px;
+  font-size: 24px;
+  letter-spacing: 4px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.inputBox #btn{
+  position: relative;
+  cursor: pointer;
+  color: #fff;
+  background: #333;
+  font-size: 24px;
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.inputBox #btn:active{
+  background-color: #1F618D;
+}
+
+
+.container-chb {
+  flex-direction: column;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container-chb input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+.container-chb:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.container-chb input:checked ~ .checkmark {
+  background-color: #333;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.container.chb input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container-chb .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.copy{
+  width: 37px;
+  height: 37px;
+  position: absolute;
+  top: 88px;
+  right: 15px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.copy:hover{
+  opacity: 1.0;
+}
+
+.keychain{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+}
+
+.add-pass{
+  width: auto;
+}
+
+.pass-id{
+  width: auto;
+}
+
+.btn-info,
+.btn-danger{
+  width: 200px;
+  margin-right: 10px;
+}
+
+.item{
+  margin-left: 6%;
+}
+
+.table{
+  margin-top: 50px;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alert, thead{
+  background: #181818;
+  opacity: 0.5;
+  color: #FF8008;
+  font-size: 20px;
+
+}

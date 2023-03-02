@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body class="bg-nav">
+    <nav>
+      <div class="logo">PassAdviser</div>
+      <input type="checkbox" id="click">
+      <label for="click" class="menu-btn">
+        <i class="fas fa-bars"></i>
+      </label>
+      <ul>
+        <li><a class="active" href="/">Home</a></li>
+        <li><a href="/generator">Generator</a></li>
+        <li><a href="/keychain">Keychain</a></li>
+        <li><a class="btn-logout" href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <div class="main-body">
+      <div class="content">
+        <div>Welcome to PassAdviser</div>
+        <div>We provide you with Password generating & storing services.</div>
+      </div>
+      <div class="banner-body">
+        <p class="banner-btn">
+          <a href="/generator" class="active">Generator</a>
+          <a href="/keychain">Keychain</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

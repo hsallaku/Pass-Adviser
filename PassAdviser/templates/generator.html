@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body class="bg-nav">
+    <nav>
+      <div class="logo">PassAdviser</div>
+      <input type="checkbox" id="click">
+      <label for="click" class="menu-btn">
+        <i class="fas fa-bars"></i>
+      </label>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a class="active" href="/generator">Generator</a></li>
+        <li><a href="/keychain">Keychain</a></li>
+        <li><a class="btn-logout" href="/logout">Logout</a></li>
+      </ul>
+    </nav>
+    <div class="gn-body">
+      <div class="inputBox">
+        <h2>Generate a secure password here</h2>
+        <input type="text" name="" placeholder="Create Password" id="password">
+        <!-- Icon from wwww.flaticon.com, author name: Becris, author site: "https://creativemarket.com/Becris" -->
+        <img src="{{ url_for('static', filename='copy.png')}}" class="copy" onclick="copyPassword()">
+        <div id="btn" onclick="getPassword()">Generate Password</div>
+        <br>
+        <br>
+        <label class="container-chb">Include numbers
+          <input type="checkbox" checked="checked" id="chb-numbers">
+          <span class="checkmark"></span>
+        </label>
+        <br>
+        <label class="container-chb">Include special characters
+          <input type="checkbox" checked="checked" id="chb-special">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      function getPassword(){
+
+        if(document.getElementById('chb-numbers').checked && document.getElementById('chb-special').checked){
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!$&?-#";
+        }
+        else if(document.getElementById('chb-numbers').checked && !(document.getElementById('chb-special').checked)){
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        }
+        else if(!(document.getElementById('chb-numbers')).checked && document.getElementById('chb-special').checked){
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$&?-#";
+        }
+        else{
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+
+        var passwordLength = 16;
+        var password = "";
+
+        for (var i=0; i<passwordLength; i++){
+          var randomNumber = Math.floor(Math.random() * chars.length);
+          password += chars.substring(randomNumber, randomNumber+1);
+        }
+
+        document.getElementById("password").value = password
+      }
+
+      function copyPassword(){
+
+        var copyPassText = document.getElementById("password");
+        copyPassText.select();
+        copyPassText.setSelectionRange(0,9999);
+        document.execCommand("copy");
+      }
+    </script>
+  </body>
+</html>
