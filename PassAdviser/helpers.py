@@ -1,13 +1,13 @@
 import os
 import requests
 import urllib.parse
-from cs50 import SQL
 
 from flask import redirect, render_template, request, session
 from functools import wraps
 
-# Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///passadviser.db")
+import sqlite3
+connection = sqlite3.connect('passadviser.db', check_same_thread=False)
+db = connection.cursor()
 
 def apology(message, code=400):
     """Render message as an apology to user."""
@@ -16,14 +16,14 @@ def apology(message, code=400):
 def passwords():
 
     rows = db.execute("SELECT * FROM keychain WHERE user_id = :user",
-                            user=session["user_id"])
+                      {"user":session["user_id"]})
 
     # pass a list of lists to the template page, template is going to iterate it to extract the data into a table
     passwords = []
     for row in rows:
 
         # create a list with all the info about the password and append it to a list of every password
-        passwords.append(list((row['pass_id'], row['pass_description'], row['pass_value'])))
+        passwords.append(list((row[1], row[2], row[3])))
 
     return passwords
 

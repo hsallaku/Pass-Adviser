@@ -1,6 +1,6 @@
 import os
 
-from cs50 import SQL
+
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -9,7 +9,29 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, passwords
 
+import sqlite3
+connection = sqlite3.connect('passadviser.db', check_same_thread=False)
+db = connection.cursor()
+
+db.execute('''CREATE TABLE IF NOT EXISTS "users" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"email"	TEXT,
+	"hash"	TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);''')
+
+db.execute('''CREATE TABLE IF NOT EXISTS "keychain" (
+	"user_id"	INTEGER NOT NULL,
+	"pass_id"	INTEGER NOT NULL UNIQUE,
+	"pass_description"	TEXT,
+	"pass_value"	TEXT,
+	PRIMARY KEY("pass_id" AUTOINCREMENT)
+);''')
+
+connection.commit()
+
 app = Flask(__name__)
+app.secret_key = 'key'
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -27,9 +49,6 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-# Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///passadviser.db")
 
 @app.route("/")
 @login_required
@@ -64,8 +83,9 @@ def keychain():
             desc = request.form.get("pass_description")
             value = request.form.get("pass_value")
             db.execute("INSERT INTO keychain (user_id, pass_description, pass_value) VALUES (:user, :desc, :value)",
-                user=session["user_id"], desc=desc, value=value)
+                       {"user":session["user_id"], "desc":desc, "value":value})
 
+            connection.commit()
             flash("Added!")
             return render_template("keychain.html", passwords=passwords())
 
@@ -77,14 +97,16 @@ def keychain():
 
             # Query database for ID
             rows = db.execute("SELECT * FROM keychain WHERE pass_id = :pass_id",
-                              pass_id=request.form.get("pass_id"))
+                              {"pass_id":request.form.get("pass_id")})
 
+            row = rows.fetchone()
             # Ensure ID exists
-            if len(rows) != 1:
+            if row is None:
                 return apology("ID was not found.", 403)
 
             db.execute("DELETE FROM keychain WHERE pass_id = :pass_id",
-                        pass_id=request.form.get("pass_id"))
+                       {"pass_id":request.form.get("pass_id")})
+            connection.commit()
 
             flash("Removed!")
             return render_template("keychain.html", passwords=passwords())
@@ -102,6 +124,10 @@ def login():
     # Forget any user_id
     session.clear()
 
+    rows = db.execute("SELECT * FROM users")
+    for row in rows.fetchall():
+        print(row)
+
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
@@ -115,14 +141,17 @@ def login():
 
         # Query database for email
         rows = db.execute("SELECT * FROM users WHERE email = :email",
-                          email=request.form.get("email"))
+                          {'email':request.form.get("email")})
+
+        row = rows.fetchone()
 
         # Ensure email exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+        if row is None or not check_password_hash(row[2], request.form.get("password")):
             return apology("invalid email and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        if row is not None:
+            session["user_id"] = row[0]
 
         # Redirect user to home page
         return redirect("/")
@@ -164,23 +193,31 @@ def register():
             return apology("The passwords don't match", 403)
 
         # Query database for email if already exists
-        elif db.execute("SELECT * FROM users WHERE email = :email",
-            email=request.form.get("email")):
+        rows = db.execute("SELECT * FROM users WHERE email = :email",
+                          {'email': request.form.get("email")})
+
+        user = rows.fetchone()
+
+        if user is not None:
             return apology("Email already taken", 403)
 
         # Insert user and hash of the password into the table
         db.execute("INSERT INTO users(email, hash) VALUES (:email, :hash)",
-            email=request.form.get("email"), hash=generate_password_hash(request.form.get("password")))
-
+                   {'email': request.form.get("email"), 'hash': generate_password_hash(request.form.get("password"))})
+        connection.commit()
         # Query database for email
-        rows = db.execute("SELECT * FROM users WHERE email = :email",
-            email=request.form.get("email"))
+        result = db.execute("SELECT * FROM users WHERE email = :email",
+                            {'email': request.form.get("email")})
 
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        # Fetch one row
+        row = result.fetchone()
 
-        # Redirect user to home page
-        return redirect("/")
+        if row is not None:
+            # Remember which user has logged in
+            session["user_id"] = row[0]
+
+            # Redirect user to home page
+            return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
